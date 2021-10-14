@@ -1,25 +1,16 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { SnackbarProvider } from 'notistack';
+// import { AuthenticationProvider } from "./context/reducers/auth/authContext";
+import Routes from "./routes/routes";
+import GlobalStyles from './shared/styles/global';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    // <AuthenticationProvider>
+      <SnackbarProvider maxSnack={3} autoHideDuration={3000} anchorOrigin={{ vertical: 'top', horizontal: 'right' }}>
+        <GlobalStyles />
+        <Routes />
+      </SnackbarProvider>
+    // </AuthenticationProvider>
   );
 }
 
