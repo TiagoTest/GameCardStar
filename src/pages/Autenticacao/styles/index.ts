@@ -19,7 +19,7 @@ const appearFromRight = keyframes`
 `;
 
 export const CustomDiv = styled.div`
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.1);
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
@@ -49,19 +49,17 @@ export const Logo = styled.img`
 export const CustomButton = styled(Button)`
   &.MuiButton-root {
     margin-top: 16px;
-    background-color: transparent;
-    color: ${Colors.strongRed};
+    background-color: ${Colors.green8};
+    color: ${Colors.white};
     width: 200px;
     height: 56px;
-    border: 1px solid ${Colors.white};
-    box-sizing: border-box;
     border-radius: 10px;
     font-weight: bold;
 
     transition: 0.5s;
 
     &:hover {
-      background: ${Colors.strongRed};
+      background: ${Colors.green7};
       color: ${Colors.white};
       border: none;
     }
@@ -69,9 +67,12 @@ export const CustomButton = styled(Button)`
 `;
 
 export const CustomTitleLogin = styled(Typography)`
-  font-size: 24px;
-  font-weight: bold;
-  color: ${Colors.white};
+  &.MuiTypography-root {
+    font-size: 32px;
+    font-weight: bold;
+    color: ${Colors.white};
+    padding: 24px 0 24px;
+  }
 `;
 
 export const CustomTextRegister = styled(Typography)`
@@ -90,6 +91,6 @@ export const CustomLink = styled(Link)`
   }
 
   &.MuiTypography-colorPrimary {
-    color: ${Colors.strongRed};
+    color: ${Colors.green4};
   }
 `;

@@ -4,7 +4,6 @@ import { FormHandles, FormHelpers, SubmitHandler } from '@unform/core';
 import { Form } from '@unform/web';
 import React, { useRef, useState } from 'react';
 import * as Yup from 'yup';
-import Logo from '../../assets/Logo.svg';
 import { IRequestSession } from '../../models/Session';
 import { Input } from '../../shared/components/Form';
 import { MainContainer } from '../../shared/components/styled/MainContainer';
@@ -70,7 +69,6 @@ export const Autenticacao = ({ navigateToRegister, actionCreateSession, loading 
             alignItems: 'center',
             flexDirection: 'column',
           }}>
-          <S.Logo src={Logo} alt="logo" />
           <S.CustomTitleLogin>Login</S.CustomTitleLogin>
           <Input type="email" name="email" placeholder="Insira seu e-mail" field="E-mail" />
           <Input

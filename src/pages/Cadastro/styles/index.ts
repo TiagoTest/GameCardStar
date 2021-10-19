@@ -51,12 +51,10 @@ export const CustomButton = styled(Button)`
   &.MuiButton-root {
     margin-top: 8px;
     margin-bottom: 8px;
-    background-color: transparent;
-    color: ${Colors.strongRed};
+    background-color: ${Colors.green8};
+    color: ${Colors.white};
     width: 200px;
     height: 56px;
-    border: 1px solid ${Colors.white};
-    box-sizing: border-box;
     border-radius: 10px;
 
     font-weight: bold;
@@ -64,16 +62,19 @@ export const CustomButton = styled(Button)`
     transition: 0.5s;
 
     &:hover {
-      background: ${Colors.strongRed};
+      background: ${Colors.green7};
       color: ${Colors.white};
     }
   }
 `;
 
 export const CustomTitleRegister = styled(Typography)`
-  font-size: 18px;
-  font-weight: bold;
-  color: ${Colors.white};
+  &.MuiTypography-root {
+    font-size: 32px;
+    font-weight: bold;
+    color: ${Colors.white};
+    padding: 20px 0 16px;
+  }
 `;
 
 export const CustomTextRegister = styled(Typography)`
@@ -84,7 +85,7 @@ export const CustomTextRegister = styled(Typography)`
 
 export const CustomLink = styled(Link)`
   text-decoration: none;
-  color: ${Colors.strongRed};
+  color: ${Colors.green4};
 `;
 
 export const CustomTextLogin = styled(Typography)`
@@ -96,7 +97,7 @@ export const CustomTextLogin = styled(Typography)`
 export const LinkLogin = styled.a`
   text-decoration: none;
   transition: 0.4s;
-  color: ${Colors.strongRed};
+  color: ${Colors.green4};
 
   &:hover {
     cursor: pointer;

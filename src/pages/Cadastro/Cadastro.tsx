@@ -4,7 +4,6 @@ import { FormHandles, FormHelpers, SubmitHandler } from '@unform/core';
 import { Form } from '@unform/web';
 import React, { useRef, useState } from 'react';
 import * as Yup from 'yup';
-import Logo from '../../assets/Logo.svg';
 import { IRequestCreateUser } from '../../models/CreateUser';
 import { Input } from '../../shared/components/Form';
 import { MainContainer } from '../../shared/components/styled/MainContainer';
@@ -89,8 +88,7 @@ export const Cadastro = ({ actionCreateUser, loading }: ICadastro) => {
             flexDirection: 'column',
             width: '100%',
           }}>
-          <S.Logo src={Logo} alt="logo" />
-          <S.CustomTitleRegister>Register</S.CustomTitleRegister>
+          <S.CustomTitleRegister>Cadastro</S.CustomTitleRegister>
           <Input type="name" name="name" placeholder="Insira seu nome" field="Nome" />
           <Input type="email" name="email" placeholder="Insira seu e-mail" field="E-mail" />
           <Input
