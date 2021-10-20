@@ -2,23 +2,14 @@ import { Grid } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
+import { useAuthenticationContext } from '../../context/reducers/auth/authContext';
 import { IQuestion } from '../../models/Question';
+import { getQuestionsByReward } from '../../services/question.service';
+import { addRewardByUser } from '../../services/user.service';
 import { ModalGeneric } from '../../shared/components/ModalGeneric';
+import { ModalLoadingSpinner } from '../../shared/components/ModalLoadingSpinner/ModalLoadingSpinner';
 import { Question } from './Question';
 import * as S from './styles';
-
-const perguntaFake: IQuestion[] = [
-  {
-    id: 'tetret',
-    name: 'A camisa é verde asdasdakldkaksdlk asldklaksdlaksdlklkl sdsdk sadasdkaksd dsadaskdak asdkasodoas ?',
-    response: true,
-    reward: '1',
-  },
-  { id: 'tetret2', name: 'A camisa é verde?', response: false, reward: '1' },
-  { id: 'tetretw', name: 'A camisa é verde?', response: false, reward: '1' },
-  { id: 'tetretd', name: 'A camisa é verde?', response: true, reward: '1' },
-  { id: 'tetrets', name: 'A camisa é verde?', response: true, reward: '1' },
-];
 
 interface ITemplateResponse {
   idQuestion: string;
@@ -26,6 +17,7 @@ interface ITemplateResponse {
 }
 
 export const QuestionsPage = () => {
+  const [loading, setLoading] = useState<boolean>(false);
   const [percentResponse, setPercentResponse] = useState<number>(0);
   const [openModalSuccess, setOpenModalSuccess] = useState<boolean>(false);
   const [openModalFail, setOpenModalFail] = useState<boolean>(false);
@@ -34,24 +26,33 @@ export const QuestionsPage = () => {
 
   const { reward } = useParams<{ reward: string }>();
   const history = useHistory();
+  const { state } = useAuthenticationContext();
   const { enqueueSnackbar } = useSnackbar();
 
-  const getQuestions = () => {
-    //chamar serviço
-    const responseApi = perguntaFake;
+  const getQuestions = async () => {
+    try {
+      setLoading(true);
 
-    const arrayResponse: ITemplateResponse[] = [];
+      const responseApi = await getQuestionsByReward(reward);
 
-    responseApi.forEach(item => {
-      arrayResponse.push({ idQuestion: item.id, responseCorrect: null });
-    });
+      const arrayResponse: ITemplateResponse[] = [];
 
-    setResponses(arrayResponse);
-    setQuestions(responseApi);
+      responseApi.forEach(item => {
+        arrayResponse.push({ idQuestion: item.id, responseCorrect: null });
+      });
+
+      setResponses(arrayResponse);
+      setQuestions(responseApi);
+    } catch (error) {
+      enqueueSnackbar('Falha ao buscar perguntas.', { variant: 'error' });
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
     getQuestions();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const rewardFormated = Number(reward);
@@ -75,11 +76,20 @@ export const QuestionsPage = () => {
 
   const returnToDashboard = () => history.push('/dashboard');
 
-  const actionButtonConfirmSuccess = () => {
-    //loading
-    setOpenModalSuccess(false);
-    // chamar api e adicionar o troféu do usuario
-    returnToDashboard();
+  const actionButtonConfirmSuccess = async () => {
+    try {
+      const { user } = state;
+      setLoading(true);
+      setOpenModalSuccess(false);
+
+      const userId = user.id;
+      await addRewardByUser(userId, reward);
+    } catch (error) {
+      enqueueSnackbar('Falha ao resgatar troféu.', { variant: 'error' });
+    } finally {
+      setLoading(false);
+      returnToDashboard();
+    }
   };
   const actionButtonCancelFail = () => {
     setOpenModalFail(false);
@@ -128,6 +138,7 @@ export const QuestionsPage = () => {
     <S.Container>
       {quizValid && (
         <>
+          <ModalLoadingSpinner aberto={loading} />
           <S.Title>Para conquistar o troféu você deve ter um aproveitamento de no mínimo 60% das questões.</S.Title>
           {questions.map((question, index) => (
             <Question key={question.id} verifyResponse={verifyResponse} questionData={question} />

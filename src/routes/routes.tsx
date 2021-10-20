@@ -16,8 +16,7 @@ const Routes = () => {
         <CustomRoute exact path="/" isPrivate={false} component={AutenticacaoRoute} />
         <CustomRoute exact path="/register" isPrivate={false} component={CadastroRoute} />
         <CustomRoute exact path="/dashboard" isPrivate component={DashboardRoute} />
-        {/* Colocar rota como privada */}
-        <CustomRoute exact path="/questions/:reward" isPrivate={false} component={QuestionsPage} />
+        <CustomRoute exact path="/questions/:reward" isPrivate component={QuestionsPage} />
         <CustomRoute path="*" isPrivate={false} component={ReturnLogin} />
       </Switch>
     </BrowserRouter>

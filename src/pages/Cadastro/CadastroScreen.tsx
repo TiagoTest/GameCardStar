@@ -16,8 +16,8 @@ export const CadastroScreen = () => {
       const response = await createUser(data);
       setLoading(false);
       if (response.success) {
-        history.push('/');
         enqueueSnackbar('Cadastro realizado com sucesso', { variant: 'success' });
+        history.push('/');
       }
       return response.success;
     } catch (error: any) {

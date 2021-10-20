@@ -7,7 +7,7 @@ export const Container = styled.div`
   flex-direction: column;
   background-color: ${Colors.screen};
 
-  min-height: 100%;
+  min-height: 100vh;
   padding: 32px;
 `;
 
