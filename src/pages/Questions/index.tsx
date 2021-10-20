@@ -14,28 +14,40 @@ const perguntaFake: IQuestion[] = [
     response: true,
     reward: '1',
   },
-  { id: 'tetret2', name: 'A camisa é verde?', response: true, reward: '1' },
-  { id: 'tetretw', name: 'A camisa é verde?', response: true, reward: '1' },
+  { id: 'tetret2', name: 'A camisa é verde?', response: false, reward: '1' },
+  { id: 'tetretw', name: 'A camisa é verde?', response: false, reward: '1' },
   { id: 'tetretd', name: 'A camisa é verde?', response: true, reward: '1' },
   { id: 'tetrets', name: 'A camisa é verde?', response: true, reward: '1' },
 ];
 
+interface ITemplateResponse {
+  idQuestion: string;
+  responseCorrect: null | boolean;
+}
+
 export const QuestionsPage = () => {
-  const [correctResponseAmount, setCorrectResponseAmount] = useState<number>(0);
-  const [incorrectResponseAmount, setICorrectResponseAmount] = useState<number>(0);
   const [percentResponse, setPercentResponse] = useState<number>(0);
   const [openModalSuccess, setOpenModalSuccess] = useState<boolean>(false);
   const [openModalFail, setOpenModalFail] = useState<boolean>(false);
   const [questions, setQuestions] = useState<IQuestion[]>([]);
-
-  const responses: boolean[] = [];
+  const [responses, setResponses] = useState<ITemplateResponse[]>([]);
 
   const { reward } = useParams<{ reward: string }>();
   const history = useHistory();
   const { enqueueSnackbar } = useSnackbar();
 
   const getQuestions = () => {
-    setQuestions(perguntaFake);
+    //chamar serviço
+    const responseApi = perguntaFake;
+
+    const arrayResponse: ITemplateResponse[] = [];
+
+    responseApi.forEach(item => {
+      arrayResponse.push({ idQuestion: item.id, responseCorrect: null });
+    });
+
+    setResponses(arrayResponse);
+    setQuestions(responseApi);
   };
 
   useEffect(() => {
@@ -47,14 +59,18 @@ export const QuestionsPage = () => {
   const rewardIsValid = rewardFormated > 0 && rewardFormated < 17 && rewardIsInteger;
   const quizValid = rewardIsValid && questions.length > 0;
 
-  const verifyResponse = (correctResponse: boolean, index: number) => {
-    if (correctResponse) {
-      const newAmountCorrect = correctResponseAmount + 1;
-      setCorrectResponseAmount(newAmountCorrect);
-    } else {
-      const newAmountIncorrect = incorrectResponseAmount + 1;
-      setICorrectResponseAmount(newAmountIncorrect);
-    }
+  const verifyResponse = (response: boolean, idQuestion: string) => {
+    const responsesCopy = responses;
+
+    responsesCopy.forEach(item => {
+      const equalId = item.idQuestion === idQuestion;
+
+      if (equalId) {
+        item.responseCorrect = response;
+      }
+    });
+
+    setResponses(responsesCopy);
   };
 
   const returnToDashboard = () => history.push('/dashboard');
@@ -69,18 +85,28 @@ export const QuestionsPage = () => {
     setOpenModalFail(false);
     returnToDashboard();
   };
-
   const actionButtonConfirmFail = () => {
     setOpenModalFail(false);
   };
 
   const validateQuestions = () => {
-    console.log(correctResponseAmount);
-    console.log(incorrectResponseAmount);
-    
-    const questionsResponseAmount = correctResponseAmount + incorrectResponseAmount;
+    let correctResponseAmount = 0;
+    let nullResponseAmount = 0;
+
+    responses.forEach(item => {
+      const responseNull = item.responseCorrect === null;
+      const responseCorrect = item.responseCorrect === true;
+
+      if (responseNull) {
+        nullResponseAmount += 1;
+      }
+      if (responseCorrect) {
+        correctResponseAmount += 1;
+      }
+    });
+
     const totalQuestions = questions.length;
-    const quizCompleted = questionsResponseAmount === totalQuestions;
+    const quizCompleted = nullResponseAmount === 0;
 
     if (quizCompleted) {
       const percent = (correctResponseAmount * 100) / totalQuestions;
@@ -104,7 +130,7 @@ export const QuestionsPage = () => {
         <>
           <S.Title>Para conquistar o troféu você deve ter um aproveitamento de no mínimo 60% das questões.</S.Title>
           {questions.map((question, index) => (
-            <Question key={question.id} verifyResponse={verifyResponse} questionData={question} index={index} />
+            <Question key={question.id} verifyResponse={verifyResponse} questionData={question} />
           ))}
           <Grid spacing={2} container justifyContent="flex-end">
             <Grid item lg={3} md={3} sm={4} xs={6}>
@@ -133,8 +159,8 @@ export const QuestionsPage = () => {
               subtitle={`Você acertou ${percentResponse}% das perguntas, para conquistar o troféu você precisa acertar no mínimo 60%.`}
               icon="fail"
               buttonCancel
-              textButtonCancel="Voltar outra hora"
-              textButtonConfirm="Tentar novamente"
+              textButtonCancel="Desistir"
+              textButtonConfirm="Corrigir"
               actionButtonConfirm={actionButtonConfirmFail}
               actionButtonCancel={actionButtonCancelFail}
             />

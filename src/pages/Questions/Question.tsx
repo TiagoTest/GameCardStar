@@ -4,20 +4,20 @@ import { IQuestion } from '../../models/Question';
 import * as S from './styles';
 
 interface IQuestionProps {
-  index: number;
   questionData: IQuestion;
-  verifyResponse: (correctResponse: boolean, index: number) => void;
+  verifyResponse: (response: boolean, idQuestion: string) => void;
 }
 
-export const Question = ({ questionData, verifyResponse, index }: IQuestionProps) => {
+export const Question = ({ questionData, verifyResponse }: IQuestionProps) => {
   const [valueQuestion, setValueQuestion] = useState<string>('');
   const titleQuestion = questionData.name;
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>, value: string) => {
     const valueBoolean = value === 'true';
     const correctResponse = valueBoolean === questionData.response;
-    
-    verifyResponse(correctResponse, index);
+    const idQuestion = questionData.id;
+
+    verifyResponse(correctResponse, idQuestion);
     setValueQuestion(value);
   };
 

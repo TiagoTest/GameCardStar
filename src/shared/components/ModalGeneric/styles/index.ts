@@ -80,6 +80,7 @@ export const CustomButton = styled(Button)<ButtonProps>`
     color: ${props => props.colorname};
     padding: 24px 0px;
     font-size: 16px;
+    height: 100%;
 
     @media (max-width: 400px) {
       font-size: 14px;
