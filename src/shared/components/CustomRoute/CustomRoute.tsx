@@ -9,7 +9,6 @@ interface CustomRouteProps extends RouteProps {
 
 export const CustomRoute = ({ isPrivate = true, component: Component, ...rest }: CustomRouteProps) => {
   const { state } = useAuthenticationContext();
-  console.log(state);
 
   const authenticated = state.user.token;
   const openRoute = !isPrivate;

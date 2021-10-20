@@ -20,10 +20,7 @@ export const AutenticacaoScreen = () => {
       setLoading(true);
       const response = await loginRequestAction(data);
       setLoading(false);
-      if (response.success) {
-        history.push('/dashboard');
-        enqueueSnackbar('Login efetuado com sucesso', { variant: 'success' });
-      }
+
       return response.success;
     } catch (error) {
       setLoading(false);
@@ -32,7 +29,9 @@ export const AutenticacaoScreen = () => {
     }
   };
 
-  return <Autenticacao loading={loading} navigateToRegister={navigateToRegister} actionCreateSession={actionCreateSession} />;
+  return (
+    <Autenticacao loading={loading} navigateToRegister={navigateToRegister} actionCreateSession={actionCreateSession} />
+  );
 };
 
 export default AutenticacaoScreen;

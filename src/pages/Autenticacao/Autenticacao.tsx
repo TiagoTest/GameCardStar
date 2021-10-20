@@ -3,6 +3,7 @@ import { CircularProgress } from '@material-ui/core';
 import { FormHandles, FormHelpers, SubmitHandler } from '@unform/core';
 import { Form } from '@unform/web';
 import React, { useRef, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import * as Yup from 'yup';
 import { IRequestSession } from '../../models/Session';
 import { Input } from '../../shared/components/Form';
@@ -23,6 +24,7 @@ interface AutenticacaoProps {
 
 export const Autenticacao = ({ navigateToRegister, actionCreateSession, loading }: AutenticacaoProps) => {
   const formRef = useRef<FormHandles>(null);
+  const history = useHistory();
 
   const [togglePassword, setTogglePassword] = useState<boolean>(false);
 
@@ -37,17 +39,20 @@ export const Autenticacao = ({ navigateToRegister, actionCreateSession, loading 
   const handleSubmit: SubmitHandler<FormData> = async (data: FormData, { reset }: FormHelpers) => {
     try {
       formRef.current!.setErrors({});
+
       const schema = Yup.object().shape({
         email: Yup.string().email('Digite um e-mail válido.').required('O e-mail e obrigatório'),
         password: Yup.string().required('A senha e obrigatória'),
       });
+
       await schema.validate(data, { abortEarly: false });
 
       const response = await actionCreateSession(data);
-      if (response) {
-        reset();
-      }
       formRef.current!.setErrors({});
+
+      if (response) {
+        history.push('/dashboard');
+      }
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
         err.inner.forEach(error => {
