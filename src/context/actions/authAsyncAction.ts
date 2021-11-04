@@ -18,7 +18,7 @@ export function AuthAsyncActions() {
     }
   };
 
-  const logoutRequestAction = async () => {
+  const logoutRequestAction = () => {
     removeUserLocalStorage();
     dispatch({ type: actions.LOGOUT });
   };

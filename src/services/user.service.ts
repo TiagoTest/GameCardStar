@@ -1,6 +1,7 @@
 import { IRequestCreateUser, IResponseCreateUser } from '../models/CreateUser';
 import { IResult } from '../models/Result';
-import { axiosPostApi } from '../utils/useAxios';
+import { IUserReward } from '../models/UserReward';
+import { axiosPostApi, axiosGetApi } from '../utils/useAxios';
 
 export const createUser = async (data: IRequestCreateUser) => {
   const response = await axiosPostApi<IResult<IResponseCreateUser>>('user/create', data);
@@ -15,5 +16,11 @@ export const addRewardByUser = async (userId: string, reward: string) => {
 
   const response = await axiosPostApi('user/add-reward', body);
 
+  return response;
+};
+
+export const getAllRewards = async (userId: string) => {
+  const route = `user/reward/${userId}`;
+  const response = await axiosGetApi<IResult<IUserReward[]>>(route);
   return response;
 };
