@@ -24,10 +24,11 @@ export const DashboardPage = () => {
     history.push('/');
   };
 
+  const { user } = state;
+
   const getRewardUser = async () => {
     try {
       setLoading(true);
-      const { user } = state;
       const userId = user.id;
       const response = await getAllRewards(userId);
       const rewardArray: string[] = [];
@@ -68,7 +69,7 @@ export const DashboardPage = () => {
     <S.Container>
       <ModalLoadingSpinner aberto={loading} />
       <S.DivTitle>
-        <S.Title>Olá, seja bem vindo!</S.Title>
+        <S.Title>Olá {user.email}, seja bem vindo!</S.Title>
         <IconButton onClick={logout}>
           <IoMdPower color="red" />
         </IconButton>

@@ -23,13 +23,13 @@ export const DivTitle = styled.div`
 `;
 
 export const Title = styled.h1`
-  font-size: 32px;
+  font-size: 20px;
   font-weight: bold;
   color: ${Colors.gray3};
 `;
 
 export const Subtitle = styled.h3`
-  font-size: 16px;
+  font-size: 14px;
   font-weight: bold;
   color: ${Colors.gray2};
   margin-top: 32px;
