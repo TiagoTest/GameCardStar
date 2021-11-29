@@ -46,17 +46,6 @@ export const DashboardPage = () => {
   };
 
   useEffect(() => {
-    const field = document.createElement('input');
-    field.setAttribute('type', 'text');
-    document.body.appendChild(field);
-
-    setTimeout(function () {
-      field.focus();
-      setTimeout(function () {
-        field.setAttribute('style', 'display:none;');
-      }, 50);
-    }, 50);
-
     getRewardUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
