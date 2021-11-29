@@ -69,7 +69,7 @@ export const DashboardPage = () => {
     <S.Container>
       <ModalLoadingSpinner aberto={loading} />
       <S.DivTitle>
-        <S.Title>Olá {user.email}, seja bem vindo!</S.Title>
+        <S.Title>Olá {user.userName}, seja bem vindo!</S.Title>
         <IconButton onClick={logout}>
           <IoMdPower color="red" />
         </IconButton>

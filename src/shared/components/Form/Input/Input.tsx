@@ -34,6 +34,11 @@ export function Input({
       ref: inputRef.current,
       path: 'value',
     });
+
+    return () => {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      inputRef.current?.blur();
+    };
   }, [fieldName, registerField]);
 
   return (
