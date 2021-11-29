@@ -29,6 +29,7 @@ export function Input({
   const { fieldName, registerField, error, defaultValue } = useField(name);
 
   useEffect(() => {
+    inputRef.current?.focus();
     registerField({
       name: fieldName,
       ref: inputRef.current,
@@ -36,7 +37,6 @@ export function Input({
     });
 
     return () => {
-      // eslint-disable-next-line react-hooks/exhaustive-deps
       inputRef.current?.blur();
     };
   }, [fieldName, registerField]);
